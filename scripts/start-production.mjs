@@ -1,49 +1,34 @@
 /**
- * Production start for Render / any host.
- * Binds 0.0.0.0:$PORT — required for Render health checks.
+ * Serve static export on 0.0.0.0:$PORT for Render.
  */
-import { cpSync, existsSync, mkdirSync } from 'fs';
+import { existsSync } from 'fs';
 import { spawn } from 'child_process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
-const standalone = join(root, '.next', 'standalone');
-const serverJs = join(standalone, 'server.js');
+const outDir = join(root, 'out');
+const serveBin = join(root, 'node_modules', '.bin', 'serve');
+const port = process.env.PORT || '3000';
+const host = '0.0.0.0';
 
-process.env.NODE_ENV = 'production';
-process.env.HOSTNAME = '0.0.0.0';
-if (!process.env.PORT) process.env.PORT = '3000';
-
-if (!existsSync(serverJs)) {
-  console.error(
-    'ERROR: .next/standalone/server.js not found.\n' +
-      'Build must succeed first: npm run build && npm run postbuild',
-  );
+if (!existsSync(join(outDir, 'index.html'))) {
+  console.error('ERROR: out/index.html not found. Run npm run build first.');
   process.exit(1);
 }
 
-try {
-  if (existsSync(join(root, 'public'))) {
-    cpSync(join(root, 'public'), join(standalone, 'public'), { recursive: true });
-  }
-  mkdirSync(join(standalone, '.next'), { recursive: true });
-  if (existsSync(join(root, '.next', 'static'))) {
-    cpSync(join(root, '.next', 'static'), join(standalone, '.next', 'static'), {
-      recursive: true,
-    });
-  }
-} catch (err) {
-  console.warn('Asset copy warning:', err instanceof Error ? err.message : err);
+if (!existsSync(serveBin)) {
+  console.error('ERROR: serve not installed. Run npm ci first.');
+  process.exit(1);
 }
 
-console.log(`Starting Next.js (production) on ${process.env.HOSTNAME}:${process.env.PORT}`);
+console.log(`Serving static site on ${host}:${port}`);
 
-const child = spawn('node', ['server.js'], {
-  cwd: standalone,
-  env: process.env,
-  stdio: 'inherit',
-});
+const child = spawn(
+  serveBin,
+  [outDir, '-l', `tcp://${host}:${port}`, '--no-clipboard', '--no-port-switching'],
+  { stdio: 'inherit', env: process.env },
+);
 
 child.on('exit', (code) => process.exit(code ?? 1));
