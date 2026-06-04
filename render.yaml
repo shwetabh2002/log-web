@@ -3,8 +3,8 @@ services:
     name: log-web
     runtime: node
     plan: free
-    buildCommand: npm ci && NODE_OPTIONS="--max-old-space-size=460" npm run build && npm run postbuild
-    startCommand: npm run start:render
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production

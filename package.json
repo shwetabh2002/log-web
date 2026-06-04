@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=460' next build",
+    "build": "NODE_ENV=production NODE_OPTIONS='--max-old-space-size=460' next build",
     "postbuild": "cp -r public .next/standalone/ && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/",
-    "start": "next start",
-    "start:render": "bash scripts/start-standalone.sh",
+    "start": "node scripts/start-production.mjs",
+    "start:next": "next start -H 0.0.0.0",
     "lint": "eslint"
   },
   "dependencies": {
