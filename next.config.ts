@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Smaller production server footprint — critical for Render free tier (512MB)
+  output: "standalone",
+  productionBrowserSourceMaps: false,
+  poweredByHeader: false,
+  compress: true,
 };
 
 export default nextConfig;

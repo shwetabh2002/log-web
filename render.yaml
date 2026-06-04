@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: log-web
+    runtime: node
+    plan: free
+    buildCommand: npm ci && NODE_OPTIONS="--max-old-space-size=460" npm run build && npm run postbuild
+    startCommand: npm run start:render
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=460
+      - key: HOSTNAME
+        value: 0.0.0.0
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
