@@ -1,5 +1,7 @@
 'use client';
 
+import { formatCurrency } from '@/lib/format';
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -90,18 +92,18 @@ export default function AdminPage() {
   }
 
   if (!user) {
-    return <div className="min-h-full bg-slate-950 p-8 text-white">Loading...</div>;
+    return <div className="min-h-full bg-[#060912] p-8 text-white">Loading...</div>;
   }
 
   return (
-    <div className="min-h-full bg-slate-950 px-6 py-10 text-white">
+    <div className="min-h-full bg-[#060912] px-6 py-10 text-white">
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
             <p className="text-slate-400">Welcome, {user.name}</p>
           </div>
-          <Link href="/" className="text-sm text-orange-400 hover:underline">
+          <Link href="/" className="text-sm text-sky-400 hover:underline">
             Home
           </Link>
         </div>
@@ -117,7 +119,7 @@ export default function AdminPage() {
               ['Open shipments', stats.openShipments],
               ['Closed shipments', stats.closedShipments],
             ].map(([label, value]) => (
-              <div key={label as string} className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+              <div key={label as string} className="card-shine rounded-2xl border border-white/5 p-4">
                 <div className="text-2xl font-semibold">{value}</div>
                 <div className="text-sm text-slate-400">{label}</div>
               </div>
@@ -134,13 +136,13 @@ export default function AdminPage() {
             {pending.map((item) => (
               <div
                 key={item._id}
-                className="rounded-2xl border border-slate-800 bg-slate-900 p-5"
+                className="card-shine rounded-2xl border border-white/5 p-5"
               >
                 <div className="font-medium">
                   {item.itemType}: {item.pickupLocation} → {item.dropLocation}
                 </div>
                 <div className="mt-2 text-sm text-slate-400">
-                  ₹{item.price} · {item.contactName} · {item.contactPhone} · {item.contactEmail}
+                  {formatCurrency(item.price)} · {item.contactName} · {item.contactPhone} · {item.contactEmail}
                 </div>
                 <div className="mt-4 flex gap-3">
                   <button
@@ -163,9 +165,9 @@ export default function AdminPage() {
 
         <section className="mt-10">
           <h2 className="text-xl font-medium">Users</h2>
-          <div className="mt-4 overflow-hidden rounded-2xl border border-slate-800">
+          <div className="mt-4 overflow-hidden rounded-2xl border border-white/5">
             <table className="min-w-full text-left text-sm">
-              <thead className="bg-slate-900 text-slate-400">
+              <thead className="bg-white/[0.03] text-slate-400">
                 <tr>
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Email</th>
@@ -177,7 +179,7 @@ export default function AdminPage() {
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u.id} className="border-t border-slate-800">
+                  <tr key={u.id} className="border-t border-white/5">
                     <td className="px-4 py-3">{u.name}</td>
                     <td className="px-4 py-3">{u.email}</td>
                     <td className="px-4 py-3 capitalize">{u.role}</td>

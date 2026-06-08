@@ -26,8 +26,8 @@ export default function RegisterSuccessClient() {
   }, [params]);
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-slate-950 px-6 text-white">
-      <div className="max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-8 text-center">
+    <div className="flex min-h-full items-center justify-center bg-[#060912] px-6 text-white">
+      <div className="glass-panel max-w-md rounded-3xl p-8 text-center">
         {status === 'checking' && (
           <>
             <h1 className="text-2xl font-semibold">Confirming payment...</h1>
@@ -36,6 +36,9 @@ export default function RegisterSuccessClient() {
         )}
         {status === 'active' && (
           <>
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 text-xl font-bold">
+              ✓
+            </div>
             <h1 className="text-2xl font-semibold">Subscription active!</h1>
             <p className="mt-4 text-slate-400">
               Check your email for login credentials and the app download link.
@@ -48,15 +51,12 @@ export default function RegisterSuccessClient() {
             <p className="mt-4 text-slate-400">
               If you completed payment, it may take a moment. Otherwise complete checkout below.
             </p>
-            <Link
-              href="/billing"
-              className="mt-6 inline-block rounded-full bg-orange-500 px-6 py-3 font-medium hover:bg-orange-400"
-            >
+            <Link href="/billing" className="btn-primary mt-6 inline-block px-6 py-3">
               Go to billing
             </Link>
           </>
         )}
-        <Link href="/login" className="mt-4 block text-orange-400 hover:underline">
+        <Link href="/login" className="mt-4 block text-sky-400 hover:underline">
           Go to login
         </Link>
       </div>

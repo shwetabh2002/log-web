@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'LogisticsHub — Connect Shippers & Carriers',
-  description: 'India\'s simplest logistics marketplace. Fixed pricing, instant contact, deals offline.',
+  description: 'America\'s simplest logistics marketplace. Fixed pricing, instant contact, deals offline.',
 };
 
 export default function RootLayout({

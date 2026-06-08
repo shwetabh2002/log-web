@@ -78,7 +78,7 @@ export const api = {
 
   getPlans: () =>
     request<
-      { id: string; name: string; role: UserRole; amountInr: number }[]
+      { id: string; name: string; role: UserRole; amountUsd: number }[]
     >('/payments/plans'),
 
   createCheckout: (token: string, planId: string) =>

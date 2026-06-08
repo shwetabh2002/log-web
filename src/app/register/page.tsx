@@ -1,5 +1,6 @@
 'use client';
 
+import { formatCurrencyMonthly } from '@/lib/format';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
@@ -7,8 +8,8 @@ import { PageShell } from '@/components/PageShell';
 import { api, UserRole } from '@/lib/api';
 
 const FALLBACK_PLANS = [
-  { id: 'shipper-basic', label: 'Shipper', subtitle: 'Post & manage shipments', price: '₹499/mo', role: 'shipper' as UserRole, amountInr: 499, icon: '📦' },
-  { id: 'carrier-basic', label: 'Carrier', subtitle: 'Browse loads & connect', price: '₹499/mo', role: 'carrier' as UserRole, amountInr: 499, icon: '🚛' },
+  { id: 'shipper-basic', label: 'Shipper', subtitle: 'Post & manage shipments', price: formatCurrencyMonthly(19), role: 'shipper' as UserRole, amountUsd: 19, icon: '📦' },
+  { id: 'carrier-basic', label: 'Carrier', subtitle: 'Browse loads & connect', price: formatCurrencyMonthly(19), role: 'carrier' as UserRole, amountUsd: 19, icon: '🚛' },
 ];
 
 export default function RegisterPage() {
@@ -26,9 +27,9 @@ export default function RegisterPage() {
           id: p.id,
           label: p.role === 'shipper' ? 'Shipper' : 'Carrier',
           subtitle: p.role === 'shipper' ? 'Post & manage shipments' : 'Browse loads & connect',
-          price: `₹${p.amountInr}/mo`,
+          price: formatCurrencyMonthly(p.amountUsd),
           role: p.role,
-          amountInr: p.amountInr,
+          amountUsd: p.amountUsd,
           icon: p.role === 'shipper' ? '📦' : '🚛',
         }));
         setPlans(mapped);
@@ -60,7 +61,7 @@ export default function RegisterPage() {
     <PageShell>
       <div className="hero-glow grid-pattern px-6 py-16">
         <div className="mx-auto max-w-2xl">
-          <Link href="/" className="text-sm text-slate-400 transition hover:text-orange-400">← Back to home</Link>
+          <Link href="/" className="text-sm text-slate-400 transition hover:text-sky-400">← Back to home</Link>
           <h1 className="mt-6 text-4xl font-bold">Choose your plan</h1>
           <p className="mt-3 text-slate-400">
             Create your account, complete payment, and receive app credentials by email.
@@ -74,14 +75,14 @@ export default function RegisterPage() {
                 onClick={() => setPlan(item)}
                 className={`card-shine rounded-2xl border p-6 text-left transition ${
                   plan.id === item.id
-                    ? 'border-orange-500 shadow-lg shadow-orange-500/10'
+                    ? 'border-sky-500 shadow-lg shadow-sky-500/10'
                     : 'border-white/5 hover:border-white/10'
                 }`}
               >
                 <div className="text-3xl">{item.icon}</div>
                 <div className="mt-3 text-lg font-semibold">{item.label}</div>
                 <div className="text-sm text-slate-400">{item.subtitle}</div>
-                <div className="mt-3 text-2xl font-bold text-orange-400">{item.price}</div>
+                <div className="mt-3 text-2xl font-bold text-sky-400">{item.price}</div>
               </button>
             ))}
           </div>

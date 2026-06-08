@@ -9,7 +9,7 @@ const fields = [
   ['itemType', 'Item type', 'text', true],
   ['pickupLocation', 'Pickup location', 'text', true],
   ['dropLocation', 'Drop location', 'text', true],
-  ['price', 'Price (INR)', 'number', true],
+  ['price', 'Price (USD)', 'number', true],
   ['notes', 'Notes (optional)', 'text', false],
   ['contactName', 'Your name', 'text', true],
   ['contactPhone', 'Phone', 'text', true],
@@ -60,7 +60,7 @@ export default function SubmitShipmentPage() {
     <PageShell>
       <div className="hero-glow grid-pattern px-6 py-16">
         <div className="mx-auto max-w-2xl">
-          <Link href="/" className="text-sm text-slate-400 hover:text-orange-400">← Back to home</Link>
+          <Link href="/" className="text-sm text-slate-400 hover:text-sky-400">← Back to home</Link>
           <h1 className="mt-6 text-4xl font-bold">Post a shipment</h1>
           <p className="mt-3 text-slate-400">
             No subscription needed. Fill in your load details — our team will review and publish it for carriers.

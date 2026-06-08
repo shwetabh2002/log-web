@@ -2,31 +2,31 @@ import Link from 'next/link';
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/5 bg-slate-950">
+    <footer className="border-t border-white/5 bg-[#060912]">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-xs font-bold">L</div>
-            <span className="font-semibold">LogisticsHub</span>
+            <div className="logo-mark text-xs">LH</div>
+            <span className="font-semibold">Logistics<span className="text-sky-400">Hub</span></span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
-            India&apos;s simplest marketplace to connect shippers with carriers.
+            America&apos;s simplest marketplace to connect shippers with carriers.
             Fixed pricing, instant contact, deals offline.
           </p>
         </div>
         <div>
           <h4 className="text-sm font-semibold text-white">Platform</h4>
           <ul className="mt-4 space-y-2 text-sm text-slate-400">
-            <li><Link href="/register" className="hover:text-orange-400">Subscribe</Link></li>
-            <li><Link href="/submit-shipment" className="hover:text-orange-400">Submit shipment</Link></li>
-            <li><Link href="/billing" className="hover:text-orange-400">Billing</Link></li>
+            <li><Link href="/register" className="hover:text-sky-400">Subscribe</Link></li>
+            <li><Link href="/submit-shipment" className="hover:text-sky-400">Submit shipment</Link></li>
+            <li><Link href="/billing" className="hover:text-sky-400">Billing</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-sm font-semibold text-white">Support</h4>
           <ul className="mt-4 space-y-2 text-sm text-slate-400">
-            <li><Link href="/login" className="hover:text-orange-400">Admin login</Link></li>
-            <li><a href="mailto:support@logisticshub.local" className="hover:text-orange-400">Contact us</a></li>
+            <li><Link href="/login" className="hover:text-sky-400">Sign in</Link></li>
+            <li><a href="mailto:support@logisticshub.com" className="hover:text-sky-400">Contact us</a></li>
           </ul>
         </div>
       </div>
