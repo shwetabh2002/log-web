@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { formatCurrency, formatCurrencyMonthly } from '@/lib/format';
+import { formatCurrency } from '@/lib/format';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { HomeBottomCta, HomeCarrierLink, HomeHeroActions, HomeRoleLinks } from '@/components/HomeMarketing';
 
 const features = [
   {
@@ -27,7 +28,7 @@ const features = [
 ];
 
 const steps = [
-  { num: '01', title: 'Subscribe on web', desc: 'Pick shipper or carrier plan, pay, get app credentials by email.' },
+  { num: '01', title: 'Subscribe on web', desc: 'Pick shipper or carrier plan, pay, get app credentials on screen.' },
   { num: '02', title: 'Download the app', desc: 'Log in on mobile and post or browse listings with fixed pricing.' },
   { num: '03', title: 'Express interest', desc: 'Found a match? Tap Interested — contact details shared immediately.' },
   { num: '04', title: 'Deal offline', desc: 'Negotiate and pay externally. Update shipment status in the app.' },
@@ -55,14 +56,7 @@ export default function Home() {
                 Connect shippers and carriers in minutes. Fixed pricing on every listing,
                 instant contact when interest is expressed — payments happen your way, offline.
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/register" className="btn-primary px-8 py-3.5">
-                  Start free trial — {formatCurrencyMonthly(19)}
-                </Link>
-                <Link href="/submit-shipment" className="btn-secondary px-8 py-3.5">
-                  Post without subscription
-                </Link>
-              </div>
+              <HomeHeroActions />
               <div className="mt-12 flex flex-wrap gap-8 border-t border-white/5 pt-8">
                 {[
                   ['500+', 'Listings'],
@@ -142,9 +136,7 @@ export default function Home() {
                 Post shipments with item type, route, and fixed price. Manage status from Open to Closed.
                 See interested carriers with full contact instantly.
               </p>
-              <Link href="/register" className="mt-6 inline-block text-sm font-semibold text-blue-400 hover:underline">
-                Subscribe as shipper →
-              </Link>
+              <HomeRoleLinks />
             </div>
             <div className="rounded-3xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 to-transparent p-8">
               <div className="text-4xl">🚚</div>
@@ -153,9 +145,7 @@ export default function Home() {
                 Browse loads near you, filter by distance and type. Post your vehicle availability.
                 Tap Interested and connect with shippers immediately.
               </p>
-              <Link href="/register" className="mt-6 inline-block text-sm font-semibold text-sky-400 hover:underline">
-                Subscribe as carrier →
-              </Link>
+              <HomeCarrierLink />
             </div>
           </div>
         </div>
@@ -184,16 +174,9 @@ export default function Home() {
           <div className="card-shine rounded-3xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 via-transparent to-indigo-500/5 p-12 md:p-16">
             <h2 className="text-3xl font-bold md:text-4xl">Ready to move your first load?</h2>
             <p className="mx-auto mt-4 max-w-lg text-slate-400">
-              Join shippers and carriers already using LogisticsHub. Subscribe today and get the mobile app credentials by email.
+              Join shippers and carriers already using LogisticsHub. Subscribe today and get the mobile app credentials on screen.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Link href="/register" className="btn-primary px-10 py-4 text-base">
-                Subscribe now
-              </Link>
-              <Link href="/login" className="btn-secondary px-10 py-4 text-base">
-                I have an account
-              </Link>
-            </div>
+            <HomeBottomCta />
           </div>
         </div>
       </section>

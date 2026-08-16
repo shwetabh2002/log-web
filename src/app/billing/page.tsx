@@ -3,26 +3,25 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/components/AuthProvider';
 import { PageShell } from '@/components/PageShell';
-import { api, User } from '@/lib/api';
+import { api } from '@/lib/api';
 
 export default function BillingPage() {
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { user, loading: authLoading, token, refresh } = useAuth();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const stored = localStorage.getItem('token');
-    if (!stored) { router.push('/login?redirect=/billing'); return; }
-    setToken(stored);
-    api.me(stored).then(setUser).catch(() => router.push('/login'));
-  }, [router]);
+    if (!authLoading && !user) {
+      router.push('/login?redirect=/billing');
+    }
+  }, [user, authLoading, router]);
 
   async function handleCheckout() {
     if (!token || !user?.subscriptionPlan) return;
-    setLoading(true);
+    setCheckoutLoading(true);
     setError('');
     try {
       const checkout = await api.createCheckout(token, user.subscriptionPlan);
@@ -30,19 +29,26 @@ export default function BillingPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Checkout failed');
     } finally {
-      setLoading(false);
+      setCheckoutLoading(false);
     }
   }
 
   return (
     <PageShell>
       <div className="hero-glow grid-pattern flex flex-1 items-center justify-center px-6 py-20">
-        {!user ? (
+        {authLoading || !user ? (
           <div className="text-slate-400">Loading...</div>
         ) : (
           <div className="card-shine w-full max-w-md rounded-3xl border border-white/5 p-8 shadow-2xl">
-            <h1 className="text-2xl font-bold">Billing</h1>
-            <p className="mt-2 text-slate-400">Hi, {user.name}</p>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold">Billing</h1>
+                <p className="mt-2 text-slate-400">Hi, {user.name}</p>
+              </div>
+              <Link href="/account" className="text-sm text-sky-400 hover:underline">
+                My account
+              </Link>
+            </div>
 
             {user.subscriptionActive ? (
               <div className="mt-8 rounded-2xl border border-green-500/30 bg-green-500/10 p-6">
@@ -56,13 +62,24 @@ export default function BillingPage() {
                     Renews / expires: {new Date(user.subscriptionExpiresAt).toLocaleDateString()}
                   </p>
                 )}
+                <button
+                  type="button"
+                  onClick={() => refresh()}
+                  className="mt-4 text-sm text-sky-400 hover:underline"
+                >
+                  Refresh status
+                </button>
               </div>
             ) : (
               <div className="mt-8">
                 <p className="text-slate-300">Complete payment to activate your account.</p>
                 <p className="mt-2 text-sm text-slate-500">Plan: {user.subscriptionPlan ?? 'Not selected'}</p>
-                <button onClick={handleCheckout} disabled={loading || !user.subscriptionPlan} className="btn-primary mt-6 w-full py-3.5">
-                  {loading ? 'Redirecting...' : 'Complete payment'}
+                <button
+                  onClick={handleCheckout}
+                  disabled={checkoutLoading || !user.subscriptionPlan}
+                  className="btn-primary mt-6 w-full py-3.5"
+                >
+                  {checkoutLoading ? 'Redirecting...' : 'Complete payment'}
                 </button>
               </div>
             )}
