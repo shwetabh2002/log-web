@@ -10,6 +10,11 @@ import { PageShell } from '@/components/PageShell';
 import { PlaceAutocomplete, PlaceValue } from '@/components/PlaceAutocomplete';
 import { api, UserRole } from '@/lib/api';
 
+const PUBLIC_REGISTER_OPEN =
+  process.env.NEXT_PUBLIC_ALLOW_PUBLIC_REGISTER === 'true' ||
+  (process.env.NEXT_PUBLIC_ALLOW_PUBLIC_REGISTER !== 'false' &&
+    process.env.NODE_ENV !== 'production');
+
 const FALLBACK_PLANS = [
   { id: 'shipper-basic', label: 'Shipper', subtitle: 'Post & manage shipments', price: formatCurrencyMonthly(19), role: 'shipper' as UserRole, amountUsd: 19, icon: '📦' },
   { id: 'carrier-basic', label: 'Carrier', subtitle: 'Browse loads & connect', price: formatCurrencyMonthly(19), role: 'carrier' as UserRole, amountUsd: 19, icon: '🚛' },
@@ -45,6 +50,12 @@ export default function RegisterPage() {
     location.address.trim().length > 0 &&
     typeof location.lat === 'number' &&
     typeof location.lng === 'number';
+
+  useEffect(() => {
+    if (!PUBLIC_REGISTER_OPEN) {
+      router.replace('/join');
+    }
+  }, [router]);
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -102,6 +113,16 @@ export default function RegisterPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!PUBLIC_REGISTER_OPEN) {
+    return (
+      <PageShell>
+        <div className="flex flex-1 items-center justify-center px-6 py-20 text-slate-400">
+          Redirecting to access request...
+        </div>
+      </PageShell>
+    );
   }
 
   if (authLoading || user) {

@@ -7,8 +7,11 @@ import { useAuth } from '@/components/AuthProvider';
 import { isAdminRole } from '@/lib/is-admin';
 import { PageShell } from '@/components/PageShell';
 import { api } from '@/lib/api';
+import { DEV_TEST_ACCOUNTS, isDevToolsEnabled } from '@/lib/env';
 
 type Mode = 'password' | 'otp';
+
+const SHOW_DEV_LOGIN = isDevToolsEnabled() && DEV_TEST_ACCOUNTS !== null;
 
 export default function LoginClient() {
   const router = useRouter();
@@ -50,6 +53,26 @@ export default function LoginClient() {
         login: login.trim(),
         password,
       });
+      setSession(accessToken, nextUser);
+      goAfterLogin(nextUser);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function loginAsTest(account: keyof NonNullable<typeof DEV_TEST_ACCOUNTS>) {
+    if (!DEV_TEST_ACCOUNTS) return;
+    const credentials = DEV_TEST_ACCOUNTS[account];
+    setMode('password');
+    setLogin(credentials.login);
+    setPassword(credentials.password);
+    setLoading(true);
+    setError('');
+    setInfo('');
+    try {
+      const { accessToken, user: nextUser } = await api.login(credentials);
       setSession(accessToken, nextUser);
       goAfterLogin(nextUser);
     } catch (err) {
@@ -276,6 +299,31 @@ export default function LoginClient() {
                 Request shipper / carrier
               </Link>
             </p>
+
+            {SHOW_DEV_LOGIN && DEV_TEST_ACCOUNTS ? (
+              <div className="mt-6 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4">
+                <p className="text-center text-xs font-semibold uppercase tracking-widest text-amber-400/80">
+                  Dev only · NODE_ENV ≠ production
+                </p>
+                <div className="mt-3 flex flex-wrap justify-center gap-2">
+                  {(
+                    Object.keys(DEV_TEST_ACCOUNTS) as Array<
+                      keyof NonNullable<typeof DEV_TEST_ACCOUNTS>
+                    >
+                  ).map((key) => (
+                    <button
+                      key={key}
+                      type="button"
+                      disabled={loading}
+                      onClick={() => loginAsTest(key)}
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium capitalize text-slate-300 transition hover:border-sky-400/40 hover:text-sky-300 disabled:opacity-50"
+                    >
+                      {key}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
